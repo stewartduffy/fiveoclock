@@ -1,15 +1,24 @@
 {
-  "name": "five",
-  "version": "0.1.0",
+  "name": "react-lambda",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "@turf/bbox-polygon": "^6.0.1",
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "run-p start:**",
+    "start:app": "react-scripts start",
+    "start:lambda": "netlify-lambda serve src/lambda -c webpack.server.js",
+    "build": "run-p build:**",
+    "build:app": "react-scripts build",
+    "build:lambda": "netlify-lambda build src/lambda",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -21,5 +30,12 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-loader": "^8.0.4",
+    "dotenv": "^6.2.0",
+    "http-proxy-middleware": "^0.19.1",
+    "netlify-lambda": "^1.1.0",
+    "npm-run-all": "^4.1.3"
+  }
 }
