@@ -3,17 +3,23 @@
   "version": "0.4.0",
   "private": true,
   "dependencies": {
+    "@turf/bbox": "^6.0.1",
     "@turf/bbox-polygon": "^6.0.1",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
+    "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "2.0.4"
+    "react-loading-overlay": "^1.0.0",
+    "react-map-gl": "^4.0.5",
+    "react-scripts": "2.0.4",
+    "viewport-mercator-project": "^6.1.0"
   },
   "scripts": {
     "start": "run-p start:**",
+    "mocks": "REACT_APP_API_URL=/.netlify/functions/mock run-p start:**",
     "start:app": "react-scripts start",
     "start:lambda": "netlify-lambda serve src/lambda -c webpack.server.js",
     "build": "run-p build:**",

@@ -1,0 +1,65 @@
+{
+  "type": "FeatureCollection",
+  "query": ["ouagadougou"],
+  "features": [
+    {
+      "id": "place.436060019969609",
+      "type": "Feature",
+      "place_type": ["place"],
+      "relevance": 1,
+      "properties": {
+        "wikidata": "Q3777"
+      },
+      "text": "Ouagadougou",
+      "place_name": "Ouagadougou, Kadiogo, Burkina Faso",
+      "center": [-1.529773, 12.363142],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.529773, 12.363142]
+      },
+      "context": [
+        {
+          "id": "region.215848",
+          "wikidata": "Q1074530",
+          "text": "Kadiogo",
+          "short_code": "BF-KAD"
+        },
+        {
+          "id": "country.321",
+          "wikidata": "Q965",
+          "text": "Burkina Faso",
+          "short_code": "bf"
+        }
+      ],
+      "bbox": [
+        -1.6644287109375,
+        12.2648635327566,
+        -1.38221740722656,
+        12.4714419317432
+      ]
+    },
+    {
+      "type": "Feature",
+      "bbox": [
+        -1.6644287109375,
+        12.2648635327566,
+        -1.38221740722656,
+        12.4714419317432
+      ],
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-1.6644287109375, 12.2648635327566],
+            [-1.38221740722656, 12.2648635327566],
+            [-1.38221740722656, 12.4714419317432],
+            [-1.6644287109375, 12.4714419317432],
+            [-1.6644287109375, 12.2648635327566]
+          ]
+        ]
+      }
+    }
+  ],
+  "attribution": "NOTICE: Â© 2018 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare."
+}

@@ -1,50 +1,12 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { loading: false, msg: null };
-  }
-
-  handleClick = e => {
-    e.preventDefault();
-
-    this.setState({ loading: true });
-    fetch("/.netlify/functions/locations")
-      .then(response => response.json())
-      .then(json => {
-        console.log("json: ", json);
-      });
-  };
-
-  render() {
-    const { loading, msg } = this.state;
-
-    return (
-      <p>
-        <button onClick={this.handleClick}>
-          {loading ? "Loading..." : "Call Lambda"}
-        </button>
-        <br />
-        <span>{msg}</span>
-      </p>
-    );
-  }
-}
+import Map from "./Map/Map";
+import styles from "./App.module.css";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
-        </header>
+      <div className={styles.app}>
+        <Map />
       </div>
     );
   }

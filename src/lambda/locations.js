@@ -4,7 +4,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const bboxPolygon = require("@turf/bbox-polygon").default;
 
-const { MAPBOX_ACCESS_TOKEN } = process.env;
+const { REACT_APP_MAPBOX_ACCESS_TOKEN } = process.env;
 
 const processDates = cities => {
   return _(cities)
@@ -52,7 +52,7 @@ async function geocode(city) {
     const response = await axios.get(`${encodeURIComponent(city)}.json`, {
       baseURL: "https://api.mapbox.com/geocoding/v5/mapbox.places/",
       params: {
-        access_token: MAPBOX_ACCESS_TOKEN,
+        access_token: REACT_APP_MAPBOX_ACCESS_TOKEN,
         limit: 1
       }
     });
