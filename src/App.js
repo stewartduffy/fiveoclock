@@ -1,13 +1,22 @@
 import React, { Component } from "react";
+import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import Map from "./Map/Map";
-import styles from "./App.module.css";
+
+const AppLayout = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
 
 class App extends Component {
   render() {
     return (
-      <div className={styles.app}>
+      <AppLayout>
+        <Helmet>
+          <title>Five O'Clock</title>
+        </Helmet>
         <Map />
-      </div>
+      </AppLayout>
     );
   }
 }

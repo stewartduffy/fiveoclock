@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import MapGL, { LinearInterpolator } from "react-map-gl";
+import { LinearInterpolator } from "react-map-gl";
 import get from "lodash/get";
 import axios from "axios";
 import WebMercatorViewport from "viewport-mercator-project";
 import bbox from "@turf/bbox";
-import LoadingOverlay from "../components/LoadingOverlay";
+import InfoPanel from "../components/InfoPanel";
 import { defaultMapStyle, dataLayer } from "./map-style.js";
 import { fromJS } from "immutable";
+import MapLayout from "./MapLayout";
 
 async function getLocations() {
   const url = process.env.REACT_APP_API_URL;
@@ -21,6 +22,7 @@ async function getLocations() {
 
 class Map extends Component {
   state = {
+    locations: null,
     isLoading: true,
     mapStyle: defaultMapStyle,
     year: 2015,
@@ -37,8 +39,9 @@ class Map extends Component {
 
   async componentDidMount() {
     const locations = await getLocations();
+    this.setState({ locations });
     this.setState({ isLoading: false });
-    this._loadData(locations);
+    // this._loadData(locations);
     this._setViewPort(locations);
   }
 
@@ -85,6 +88,8 @@ class Map extends Component {
         { padding: 40 }
       );
 
+      console.log("_setViewPort: ");
+
       this.setState({
         viewport: {
           ...this.state.viewport,
@@ -118,18 +123,15 @@ class Map extends Component {
     const { viewport, mapStyle } = this.state;
 
     return (
-      <div style={{ height: "100%" }}>
-        <LoadingOverlay isLoading={this.state.isLoading} />
-
-        <MapGL
-          {...viewport}
-          width="100%"
-          height="100%"
+      <React.Fragment>
+        <MapLayout
+          viewport={viewport}
           mapStyle={mapStyle}
-          onViewportChange={this._onViewportChange}
-          onClick={this._onClick}
+          _onViewportChange={this._onViewportChange}
+          _onClick={this._onClick}
         />
-      </div>
+        <InfoPanel locations={this.state.locations} />
+      </React.Fragment>
     );
   }
 }
