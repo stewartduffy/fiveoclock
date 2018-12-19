@@ -1,24 +1,15 @@
 import React, { Component } from "react";
-import { LinearInterpolator } from "react-map-gl";
+import { LinearInterpolator, Marker } from "react-map-gl";
 import get from "lodash/get";
-import axios from "axios";
 import WebMercatorViewport from "viewport-mercator-project";
 import bbox from "@turf/bbox";
+import { getCoord } from "@turf/invariant";
 import InfoPanel from "../components/InfoPanel";
 import { defaultMapStyle, dataLayer } from "./map-style.js";
 import { fromJS } from "immutable";
 import MapLayout from "./MapLayout";
-
-async function getLocations() {
-  const url = process.env.REACT_APP_API_URL;
-
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+import getLocations from "../api/getLocations";
+import CityPin from "./city-pin";
 
 class Map extends Component {
   state = {
@@ -28,6 +19,7 @@ class Map extends Component {
     year: 2015,
     data: null,
     hoveredFeature: null,
+    markerCoordinates: null,
     viewport: {
       latitude: 40,
       longitude: -100,
@@ -39,8 +31,9 @@ class Map extends Component {
 
   async componentDidMount() {
     const locations = await getLocations();
-    this.setState({ locations });
-    this.setState({ isLoading: false });
+    const markerFeature = get(locations, "features[0]");
+    const markerCoordinates = getCoord(markerFeature);
+    this.setState({ locations, isLoading: false, markerCoordinates });
     // this._loadData(locations);
     this._setViewPort(locations);
   }
@@ -119,6 +112,21 @@ class Map extends Component {
 
   _onViewportChange = viewport => this.setState({ viewport });
 
+  _renderCityMarker = () => {
+    const { markerCoordinates } = this.state;
+
+    if (markerCoordinates) {
+      return (
+        <Marker
+          longitude={markerCoordinates[0]}
+          latitude={markerCoordinates[1]}
+        >
+          <CityPin size={50} />
+        </Marker>
+      );
+    }
+  };
+
   render() {
     const { viewport, mapStyle } = this.state;
 
@@ -129,7 +137,9 @@ class Map extends Component {
           mapStyle={mapStyle}
           _onViewportChange={this._onViewportChange}
           _onClick={this._onClick}
-        />
+        >
+          {this._renderCityMarker()}
+        </MapLayout>
         <InfoPanel locations={this.state.locations} />
       </React.Fragment>
     );

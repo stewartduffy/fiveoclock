@@ -17,7 +17,13 @@ const MapWrapper = styled.div`
 
 class MapLayout extends Component {
   render() {
-    const { viewport, mapStyle, _onViewportChange, _onClick } = this.props;
+    const {
+      viewport,
+      mapStyle,
+      _onViewportChange,
+      _onClick,
+      children
+    } = this.props;
 
     return (
       <MapWrapper>
@@ -28,7 +34,9 @@ class MapLayout extends Component {
           mapStyle={mapStyle}
           onViewportChange={_onViewportChange}
           onClick={_onClick}
-        />
+        >
+          {children}
+        </MapGL>
       </MapWrapper>
     );
   }
