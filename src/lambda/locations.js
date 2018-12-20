@@ -1,22 +1,26 @@
-const head = require("lodash/head");
-const processDates = require("./utils/processDates").default;
+const sample = require("lodash/sample");
+// const head = require("lodash/head");
 const getHtml = require("./utils/getHtml").default;
-const geoCode = require("./utils/geoCode").default;
 const scrapeHtml = require("./utils/scrapeHtml").default;
+const processDates = require("./utils/processDates").default;
+const geoCode = require("./utils/geoCode").default;
 
 exports.handler = async () => {
   const html = await getHtml();
   const data = scrapeHtml(html);
-  const filteredData = processDates(data);
-  const firstCity = head(filteredData);
-  const geoData = await geoCode(firstCity.name);
+  const processedDates = processDates(data);
+  const city = sample(processedDates);
+  const geoData = await geoCode(city.name);
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      ...geoData,
-      name: firstCity.name,
-      placeData: firstCity
+      geoJson: {
+        ...geoData,
+        name: city.name,
+        placeData: city
+      },
+      places: processedDates
     })
   };
 };

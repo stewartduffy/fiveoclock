@@ -7,7 +7,6 @@ const StyledInfoPanel = styled.div`
   left: 0px;
   width: 100%;
   height: 50%;
-
   display: flex;
   flex-direction: column;
   bottom: 0;
@@ -31,15 +30,19 @@ const StyledInfoPanelContent = styled.div`
   }
 `;
 
-const InfoPanel = ({ locations }) => {
+const InfoPanel = ({ selectedLocation }) => {
   return (
     <StyledInfoPanel>
       <StyledInfoPanelContent>
-        <ReactLoadingOverlay active={!locations} spinner text="Loading...">
-          {locations && (
+        <ReactLoadingOverlay
+          active={!selectedLocation}
+          spinner
+          text="Loading..."
+        >
+          {selectedLocation && (
             <React.Fragment>
-              <h1>{locations.placeData.name}</h1>
-              <h2>{locations.placeData.cleanTime}</h2>
+              <h1>{selectedLocation.placeData.name}</h1>
+              <h2>{selectedLocation.placeData.cleanTime}</h2>
             </React.Fragment>
           )}
         </ReactLoadingOverlay>

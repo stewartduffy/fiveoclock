@@ -13,13 +13,14 @@ import CityPin from "./city-pin";
 
 class Map extends Component {
   state = {
-    locations: null,
     isLoading: true,
     mapStyle: defaultMapStyle,
-    year: 2015,
-    data: null,
-    hoveredFeature: null,
-    markerCoordinates: null,
+    locationsResponse: null,
+    selectedLocation: null,
+    selectedLocationFeaturePoint: null,
+    selectedLocationFeaturePolygon: null,
+    selectedLocationFeatureCoordinates: null,
+
     viewport: {
       latitude: 40,
       longitude: -100,
@@ -30,12 +31,29 @@ class Map extends Component {
   };
 
   async componentDidMount() {
-    const locations = await getLocations();
-    const markerFeature = get(locations, "features[0]");
-    const markerCoordinates = getCoord(markerFeature);
-    this.setState({ locations, isLoading: false, markerCoordinates });
-    // this._loadData(locations);
-    this._setViewPort(locations);
+    const locationsResponse = await getLocations();
+    const selectedLocation = get(locationsResponse, "geoJson");
+    const selectedLocationFeaturePoint = get(selectedLocation, "features[0]");
+    const selectedLocationFeaturePolygon = get(selectedLocation, "features[1]");
+    const selectedLocationFeatureCoordinates = getCoord(
+      selectedLocationFeaturePoint
+    );
+
+    this.setState({
+      isLoading: false,
+      locationsResponse,
+      selectedLocation,
+      selectedLocationFeaturePoint,
+      selectedLocationFeaturePolygon,
+      selectedLocationFeatureCoordinates
+    });
+
+    // this._loadData(selectedLocation);
+    this._setViewPort(selectedLocationFeaturePolygon);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prevState: ", prevState);
   }
 
   _onClick = event => {
@@ -66,12 +84,12 @@ class Map extends Component {
     }
   };
 
-  _setViewPort = locations => {
-    const feature = get(locations, "features[1]");
-
-    if (feature) {
+  _setViewPort = selectedLocationFeaturePolygon => {
+    if (selectedLocationFeaturePolygon) {
       // calculate the bounding box of the feature
-      const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+      const [minLng, minLat, maxLng, maxLat] = bbox(
+        selectedLocationFeaturePolygon
+      );
 
       // construct a viewport instance from the current state
       const viewport = new WebMercatorViewport(this.state.viewport);
@@ -80,8 +98,6 @@ class Map extends Component {
         [[minLng, minLat], [maxLng, maxLat]],
         { padding: 40 }
       );
-
-      console.log("_setViewPort: ");
 
       this.setState({
         viewport: {
@@ -113,13 +129,13 @@ class Map extends Component {
   _onViewportChange = viewport => this.setState({ viewport });
 
   _renderCityMarker = () => {
-    const { markerCoordinates } = this.state;
+    const { selectedLocationFeatureCoordinates } = this.state;
 
-    if (markerCoordinates) {
+    if (selectedLocationFeatureCoordinates) {
       return (
         <Marker
-          longitude={markerCoordinates[0]}
-          latitude={markerCoordinates[1]}
+          longitude={selectedLocationFeatureCoordinates[0]}
+          latitude={selectedLocationFeatureCoordinates[1]}
         >
           <CityPin size={50} />
         </Marker>
@@ -140,7 +156,7 @@ class Map extends Component {
         >
           {this._renderCityMarker()}
         </MapLayout>
-        <InfoPanel locations={this.state.locations} />
+        <InfoPanel selectedLocation={this.state.selectedLocation} />
       </React.Fragment>
     );
   }
