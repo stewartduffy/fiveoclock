@@ -36,6 +36,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "reactSnap": {
+    "skipThirdPartyRequests": true
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
