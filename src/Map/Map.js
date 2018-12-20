@@ -11,6 +11,8 @@ import MapLayout from "./MapLayout";
 import getLocations from "../api/getLocations";
 import CityPin from "./city-pin";
 
+const snap = navigator.userAgent === "ReactSnap";
+
 class Map extends Component {
   state = {
     isLoading: true,
@@ -31,25 +33,30 @@ class Map extends Component {
   };
 
   async componentDidMount() {
-    const locationsResponse = await getLocations();
-    const selectedLocation = get(locationsResponse, "geoJson");
-    const selectedLocationFeaturePoint = get(selectedLocation, "features[0]");
-    const selectedLocationFeaturePolygon = get(selectedLocation, "features[1]");
-    const selectedLocationFeatureCoordinates = getCoord(
-      selectedLocationFeaturePoint
-    );
+    if (!snap) {
+      const locationsResponse = await getLocations();
+      const selectedLocation = get(locationsResponse, "geoJson");
+      const selectedLocationFeaturePoint = get(selectedLocation, "features[0]");
+      const selectedLocationFeaturePolygon = get(
+        selectedLocation,
+        "features[1]"
+      );
+      const selectedLocationFeatureCoordinates = getCoord(
+        selectedLocationFeaturePoint
+      );
 
-    this.setState({
-      isLoading: false,
-      locationsResponse,
-      selectedLocation,
-      selectedLocationFeaturePoint,
-      selectedLocationFeaturePolygon,
-      selectedLocationFeatureCoordinates
-    });
+      this.setState({
+        isLoading: false,
+        locationsResponse,
+        selectedLocation,
+        selectedLocationFeaturePoint,
+        selectedLocationFeaturePolygon,
+        selectedLocationFeatureCoordinates
+      });
 
-    // this._loadData(selectedLocation);
-    this._setViewPort(selectedLocationFeaturePolygon);
+      // this._loadData(selectedLocation);
+      this._setViewPort(selectedLocationFeaturePolygon);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
