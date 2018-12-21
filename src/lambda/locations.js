@@ -1,5 +1,4 @@
 const sample = require("lodash/sample");
-// const head = require("lodash/head");
 const getHtml = require("./utils/getHtml").default;
 const scrapeHtml = require("./utils/scrapeHtml").default;
 const processDates = require("./utils/processDates").default;
@@ -9,7 +8,10 @@ exports.handler = async () => {
   const html = await getHtml();
   const data = scrapeHtml(html);
   const processedDates = processDates(data);
-  const city = sample(processedDates);
+  //@TODO: ^^ Handle case when nowhere is 5! 1.30 NZ time summer time there is none. Either 4.30 or 6.30(ish)
+  const city = sample(
+    processedDates.data ? processedDates.data : processedDates
+  );
   const geoData = await geoCode(city.name);
 
   return {
