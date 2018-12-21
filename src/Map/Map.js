@@ -63,34 +63,6 @@ class Map extends Component {
     console.log("prevState: ", prevState);
   }
 
-  _onClick = event => {
-    const feature = event.features[0];
-    if (feature) {
-      // calculate the bounding box of the feature
-      const [minLng, minLat, maxLng, maxLat] = bbox(feature);
-      // construct a viewport instance from the current state
-      const viewport = new WebMercatorViewport(this.state.viewport);
-
-      const { longitude, latitude, zoom } = viewport.fitBounds(
-        [[minLng, minLat], [maxLng, maxLat]],
-        { padding: 40 }
-      );
-
-      this.setState({
-        viewport: {
-          ...this.state.viewport,
-          longitude,
-          latitude,
-          zoom,
-          transitionInterpolator: new LinearInterpolator({
-            around: [event.offsetCenter.x, event.offsetCenter.y]
-          }),
-          transitionDuration: 1000
-        }
-      });
-    }
-  };
-
   _setViewPort = selectedLocationFeaturePolygon => {
     if (selectedLocationFeaturePolygon) {
       // calculate the bounding box of the feature
@@ -151,7 +123,7 @@ class Map extends Component {
   };
 
   render() {
-    const { viewport, mapStyle } = this.state;
+    const { viewport, mapStyle, selectedLocation } = this.state;
 
     return (
       <React.Fragment>
@@ -159,11 +131,10 @@ class Map extends Component {
           viewport={viewport}
           mapStyle={mapStyle}
           _onViewportChange={this._onViewportChange}
-          _onClick={this._onClick}
         >
           {this._renderCityMarker()}
         </MapLayout>
-        <InfoPanel selectedLocation={this.state.selectedLocation} />
+        {selectedLocation && <InfoPanel selectedLocation={selectedLocation} />}
       </React.Fragment>
     );
   }
