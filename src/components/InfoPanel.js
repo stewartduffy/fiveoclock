@@ -41,8 +41,11 @@ const InfoPanel = ({ selectedLocation }) => {
         >
           {selectedLocation && (
             <React.Fragment>
-              <h1>{selectedLocation.placeData.name}</h1>
-              <h2>{selectedLocation.placeData.cleanTime}</h2>
+              <h4>Port Moresby</h4>
+              <h3>Papua New Guinea</h3>
+
+              {/* <h1>{selectedLocation.placeData.name}</h1>
+              <h2>{selectedLocation.placeData.cleanTime}</h2> */}
             </React.Fragment>
           )}
         </ReactLoadingOverlay>

@@ -59,9 +59,9 @@ class Map extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log("prevState: ", prevState);
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log("prevState: ", prevState);
+  // }
 
   _setViewPort = selectedLocationFeaturePolygon => {
     if (selectedLocationFeaturePolygon) {

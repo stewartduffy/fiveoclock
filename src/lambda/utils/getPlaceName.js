@@ -7,7 +7,12 @@ const getPlaceName = (placeUrl = "") => {
     const city = startCase(toLower(urlParts[3]));
     const country = startCase(toLower(urlParts[2]));
 
-    return `${city}, ${country}`.replace(/-/g, " ");
+
+    return {
+      name: `${city}, ${country}`.replace(/-/g, " "),
+      city,
+      country,
+    };
   }
 };
 

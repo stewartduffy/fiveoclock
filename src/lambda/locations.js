@@ -12,6 +12,7 @@ exports.handler = async () => {
   const city = sample(
     processedDates.data ? processedDates.data : processedDates
   );
+
   const geoData = await geoCode(city.name);
 
   return {

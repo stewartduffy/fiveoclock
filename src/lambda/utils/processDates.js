@@ -19,7 +19,7 @@ const isFive = cities => {
       return {
         time,
         cleanTime,
-        name: getPlaceName(name.find("a").attr("href")),
+        ...getPlaceName(name.find("a").attr("href")),
         moment: moment(cleanTime, "ddd h.mm a").format(
           "dddd, MMMM Do YYYY, h:mm:ss a"
         )
@@ -43,7 +43,7 @@ const isSix = cities => {
       return {
         time,
         cleanTime,
-        name: getPlaceName(name.find("a").attr("href")),
+        ...getPlaceName(name.find("a").attr("href")),
         moment: moment(cleanTime, "ddd h.mm a").format(
           "dddd, MMMM Do YYYY, h:mm:ss a"
         )
